@@ -1,94 +1,92 @@
 #include<bits/stdc++.h>
 using namespace std;
-long long tree[4*100005];
-long long a[100005];
-void build(long long  node, long long start, long long end)
+int tree[4*1000000];
+
+int a[100000+1];
+void build(int node, int start, int end)
 {
     if(start == end)
-	{
-		if(a[start]%2==0)
+    {
+        // Leaf node will have a single element
         tree[node] = a[start];
-        else
-        	tree[node]=-1;
     }
     else
     {
         int mid = (start + end) / 2;
+        // Recurse on the left child
         build(2*node, start, mid);
+        // Recurse on the right child
         build(2*node+1, mid+1, end);
-        if(tree[2*node]%2==0 && tree[2*node+1]%2==0)
-        	tree[node] = max(tree[2*node],tree[2*node+1]);
-        else if(tree[2*node]%2==0 && tree[2*node+1]%2!=0)
-        	tree[node]=tree[2*node];
-        else if(tree[2*node]%2!=0 && tree[2*node+1]%2==0)
-        	tree[node]=tree[2*node+1];
-		else
-			tree[node]=-1;        
+        // Internal node will have the sum of both of its children
+        tree[node] = min(tree[2*node],tree[2*node+1]);
     }
 }
-void update(long long  node, long long start, long long end, long long idx, long long val)
+void update(int node, int start, int end, int idx, int val)
 {
     if(start == end)
     {
-    	if((val%2)==0)
-    	{
-    	a[idx]= val;
-        tree[node] = val;	
-		}
+        // Leaf node
+        a[start]= val;
+        tree[node]= val;
     }
     else
     {
         int mid = (start + end) / 2;
         if(start <= idx and idx <= mid)
+        {
+            // If idx is in the left child, recurse on the left child
             update(2*node, start, mid, idx, val);
+        }
         else
+        {
+            // if idx is in the right child, recurse on the right child
             update(2*node+1, mid+1, end, idx, val);
-        tree[node] = max(tree[2*node],tree[2*node+1]);
+        }
+        // Internal node will have the sum of both of its children
+        tree[node] = min(tree[2*node],tree[2*node+1]);
+      //  printf("tree[%d] is %d\n",node,tree[node]);
     }
 }
-long long query(long long node, long long start, long long end, long long l, long long r)
+int query(int node, int start, int end, int l, int r)
 {
-    if(r < start || end < l)
+    if((r < start ) || (end<l))
     {
-        return -1;
+    //	printf("returnded/....\n");
+        // range represented by a node is completely outside the given range
+        return 100000000;
     }
-    if(l <= start && end <= r)
+    else if(l <= start && end <= r)
     {
+    	//printf("yes");
+        // range represented by a node is completely inside the given range
         return tree[node];
     }
+    // range represented by a node is partially inside and partially outside the given range
     int mid = (start + end) / 2;
     int p1 = query(2*node, start, mid, l, r);
     int p2 = query(2*node+1, mid+1, end, l, r);
-    return max(p1,p2);
+     return (min(p1,p2));
 }
 int main()
 {
-	long long t,i,j,temp=0,x=0;
-	long long n,l,r,q,ans;
+	int n,i,j,q,l,r;
+	char c;
+	int ans;
 	cin>>n>>q;
-	for(i=1;i<=n;i++)
-		cin>>a[i];
-	build(1,1,n);
+	for(i=0;i<n;i++)
+	{
+		cin>>a[i];	
+	}
+	build(1,0,n-1);
 	while(q--)
 	{
-		cin>>t;
-		if(t==1)
-			{
-				cin>>i>>x;
-				update(1,1,n,i,x);
-			}
+		cin>>c>>l>>r;
+		if(c=='u')
+		update(1,0,n-1,l-1,r);
 		else
 		{
-			if(t==2)
-				{
-					cin>>l>>r;
-						ans=query(1,1,n,l,r);
-						if(ans==-1)
-							cout<<"DNE"<<endl;
-						else
+				ans=query(1,0,n-1,l-1,r-1);	
 				cout<<ans<<endl;
-				}
-		}
-	}
-	return 0;
+		}	
+	}	
 }
