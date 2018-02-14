@@ -1,9 +1,5 @@
 /* The closer you see , the less you observe */
 
-
-/* This code will work only for disinct integers in an array */
-
-
 #include<bits/stdc++.h>
 using namespace std;
 #define boost std::ios::sync_with_stdio(false);
