@@ -8,9 +8,9 @@ using namespace std;
 void getAllSubarrays_itr(int arr[],int n){
 	
 	cout<<"Subarrays-"<<endl;
-	for(int i=0;i<n;i++){
-		for(int j=i;j<n;j++){
-			for(int k=i;k<=j;k++)
+	for(int start=0;start<n;start++){
+		for(int end=start;end<n;end++){
+			for(int k=start;k<=end;k++)
 				cout<<arr[k]<<" ";
 			cout<<endl;
 		}
