@@ -1,7 +1,7 @@
-/ GFG problem : Print all nodes that dont have siblings
+// GFG problem : Print all nodes that dont have siblings
 // function code starts from line : 118
 
-// { Driver Code Starts
+/// { Driver Code Starts
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -119,9 +119,10 @@ vector<int> noSibling(Node* node)
 {
     // code here
    vector<int> v;
+   v.clear();
    if(node==NULL){
-    v.push_back(-1);
-    return v;   
+        v.push_back(-1);
+        return v;   
    }
     queue<Node*> q;
     q.push(node);
@@ -129,7 +130,7 @@ vector<int> noSibling(Node* node)
     while(!q.empty()){
         Node *temp=q.front();
         q.pop();
-        if((temp->right==NULL and temp->left!=NULL)) 
+        if(temp->right==NULL and temp->left!=NULL)
             v.push_back(temp->left->data);
         if(temp->left==NULL and temp->right!=NULL)
             v.push_back(temp->right->data);
@@ -139,5 +140,8 @@ vector<int> noSibling(Node* node)
             q.push(temp->right);
         
     }
+    if(v.empty())
+        v.push_back(-1);
+    sort(v.begin(),v.end());
     return v;
 }
