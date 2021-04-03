@@ -5,6 +5,7 @@ public:
         int data;
         int min;
         Node *next;
+        Node(int x, int d): data(x), min(d), next(NULL) {}
     };
     
     struct Node* head;
@@ -13,15 +14,12 @@ public:
     }
     
     void push(int val) {
-        struct Node *new_node = new Node();
+        struct Node *new_node;
         if(head==NULL){
-             new_node->data=val;
-             new_node->min=val;
-             new_node->next=NULL;
+             new_node = new Node(val,val);
         }
         else{
-             new_node->data=val;
-             new_node->min=min(val,head->min);
+             new_node = new Node(val,min(val,head->min));
              new_node->next=head;
         }
         head=new_node;
