@@ -11,8 +11,8 @@ public:
         int l=s.length();
         if(l<=1)
             return l;
-        
-        map<char,int> freq;
+        //whereever sorting doesnt matter, use unordered_map
+        unordered_map<char,int> freq;
         int ans=0;
         while(j<l){
             
@@ -21,8 +21,8 @@ public:
                 while(freq.size()<j-i+1){
                     freq[s[i]]--;  
                     if(freq[s[i]]==0){
-                        auto it=freq.find(s[i]);
-                        freq.erase(it);
+                        //unlike vectors, in map, erase can take position like this
+                        freq.erase(s[i]);
                     }
                     i++;
                 }
